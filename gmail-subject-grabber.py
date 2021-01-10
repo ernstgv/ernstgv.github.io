@@ -45,17 +45,27 @@ def main():
         
         #succeeding lines came from https://www.geeksforgeeks.org/how-to-read-emails-from-gmail-using-gmail-api-in-python/
         
-        for singlemessage in messageslist:
-            txt = service.users().messages().get(userId='me', id=singlemessage['id']).execute()
-            try:
-                payload = txt['payload']
-                headers = payload['headers']
-                for d in headers:
-                    if d['name'] == 'Subject':
-                        subject = d['value']
-                print(subject)
-            except:
-                pass
+        if not messageslist:
+            print("NONE")
+
+        else:
+
+            for singlemessage in messageslist:
+                #print(singlemessage['id'])
+                txt = service.users().messages().get(userId='me', id=singlemessage['id']).execute()
+                try:
+                    payload = txt['payload']
+                    headers = payload['headers']
+                    # print(headers)
+                    for d in headers:
+                        if d['name'] == 'Subject':
+                            subject = d['value']
+            #             if d['name'] == 'From':
+            #                 sender = d['value']
+                    print(subject)
+            #         print(sender)
+                except:
+                    pass
 
 if __name__ == '__main__':
     main()
